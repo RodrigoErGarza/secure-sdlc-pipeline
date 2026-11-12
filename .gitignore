@@ -7,7 +7,6 @@ app/node_modules/
 sbom*.json
 zap-report*
 report_*.html
-package-lock.json
 
 # Env / secrets (never commit real ones)
 .env
@@ -18,3 +17,13 @@ package-lock.json
 *.swp
 .idea/
 .vscode/
+
+# Entorno virtual de Python
+.venv/
+
+# Resultados locales de Semgrep
+semgrep-resultados.json
+
+# Informes locales de Dependency-Check
+dependency-check-report.*
+dependency-check-data/

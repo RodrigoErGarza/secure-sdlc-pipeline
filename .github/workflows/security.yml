@@ -38,6 +38,65 @@ jobs:
           sarif_file: semgrep.sarif
           category: semgrep
 
+
+
+  # ------------------------------------------------------------
+  # SCA - OWASP Dependency-Check
+  # ------------------------------------------------------------
+  dependency_check:
+    name: SCA - OWASP Dependency-Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar carpetas
+        run: |
+          mkdir -p dependency-check-reports
+          mkdir -p dependency-check-data
+
+      - name: Restaurar cache NVD
+        uses: actions/cache@v4
+        with:
+          path: dependency-check-data
+          key: dependency-check-nvd-${{ runner.os }}-v13
+          restore-keys: |
+            dependency-check-nvd-${{ runner.os }}-
+
+      - name: Ejecutar OWASP Dependency-Check
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+        run: |
+          if [ -z "$NVD_API_KEY" ]; then
+            echo "ERROR: Falta el secreto NVD_API_KEY"
+            exit 1
+          fi
+
+          docker run --rm \
+            --user "$(id -u):$(id -g)" \
+            -e NVD_API_KEY \
+            -v "${{ github.workspace }}/app:/src:ro" \
+            -v "${{ github.workspace }}/dependency-check-reports:/report" \
+            -v "${{ github.workspace }}/dependency-check-data:/usr/share/dependency-check/data" \
+            --entrypoint /bin/sh \
+            owasp/dependency-check:13.0.0 \
+            -c 'exec /usr/share/dependency-check/bin/dependency-check.sh \
+              --project "Laboratorio DevSecOps Semana 7" \
+              --scan /src \
+              --out /report \
+              --format HTML \
+              --format JSON \
+              --nvdApiKey "$NVD_API_KEY"'
+
+      - name: Publicar informes SCA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: dependency-check-reports/
+          if-no-files-found: warn
+
   # ---------------------------------------------------------------- Secrets
   secrets:
     name: Secrets · Gitleaks
