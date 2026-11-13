@@ -37,6 +37,25 @@ jobs:
         with:
           sarif_file: semgrep.sarif
           category: semgrep
+  # ------------------------------------------------------------
+  # Politica de fallo por severidad - SAST
+  # ------------------------------------------------------------
+  security_gate_sast:
+    name: Security Gate - SAST ERROR
+    runs-on: ubuntu-latest
+    needs: sast
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Semgrep
+        run: pip install semgrep
+
+      - name: Bloquear hallazgos de severidad ERROR
+        run: |
+          semgrep scan --config auto --severity ERROR --error app/
+
 
 
 
