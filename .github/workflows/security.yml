@@ -12,7 +12,7 @@ name: Secure SDLC Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [main, laboratorio-semana7]
   pull_request:
   workflow_dispatch:
 
