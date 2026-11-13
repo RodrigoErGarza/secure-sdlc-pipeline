@@ -115,6 +115,12 @@ jobs:
           name: dependency-check-report
           path: dependency-check-reports/
           if-no-files-found: warn
+      - name: Security Gate SCA - CVSS 7.0
+        if: always()
+        run: |
+          python3 scripts/security_gate_sca.py \
+            dependency-check-reports/dependency-check-report.json \
+            --threshold 7.0
 
   # ---------------------------------------------------------------- Secrets
   secrets:
