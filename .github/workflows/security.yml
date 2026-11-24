@@ -230,3 +230,4 @@ jobs:
           rules_file_name: policies/zap-rules.tsv
           cmd_options: '-a'
           allow_issue_writing: false
+          fail_action: true

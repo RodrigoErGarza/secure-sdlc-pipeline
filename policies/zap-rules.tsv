@@ -6,5 +6,6 @@
 10021	WARN	X-Content-Type-Options header missing
 10020	WARN	Missing anti-clickjacking header
 10038	FAIL	Content Security Policy header not set
+90004	FAIL	Cross-Origin-Embedder-Policy Header Missing or Invalid
 40018	WARN	SQL Injection (raise to FAIL to block the build)
 90020	WARN	Remote OS Command Injection (raise to FAIL to block the build)
