@@ -18,6 +18,10 @@ report_*.html
 .idea/
 .vscode/
 
+# Archivos temporales de Python
+__pycache__/
+*.py[cod]
+
 # Entorno virtual de Python
 .venv/
 
