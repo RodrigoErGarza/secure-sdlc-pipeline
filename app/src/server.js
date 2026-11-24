@@ -26,6 +26,26 @@ const AWS_SECRET_ACCESS_KEY = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY';
 
 app.get('/health', (_req, res) => res.json({ status: 'ok' }));
 
+
+ // Página HTML exclusiva para verificar el Security Gate DAST.
+ // Solo para el entorno de laboratorio; no desplegar en producción.
+ app.get('/', (_req, res) => {
+   res.status(200).type('html').send(`
+     <!DOCTYPE html>
+     <html lang="es">
+       <head>
+         <meta charset="UTF-8">
+         <title>Laboratorio DevSecOps Semana 9</title>
+       </head>
+       <body>
+         <h1>Laboratorio DevSecOps</h1>
+         <p>Aplicación de pruebas SAST, SCA y DAST.</p>
+       </body>
+     </html>
+   `);
+ });
+
+
 // [VULN-02] SQL injection (CWE-89): user input concatenated straight into a query.
 app.get('/users', (req, res) => {
   const query = "SELECT * FROM users WHERE name = '" + req.query.name + "'";
